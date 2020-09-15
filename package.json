@@ -42,10 +42,9 @@
     ]
   },
   "lint-staged": {
-    "*.{ts, tsx, css, json}": [
+    "*.{ts, tsx, css, json, md}": [
       "yarn run lint:fix",
-      "pretty-quick --staged",
-      "git add"
+      "pretty-quick --staged"
     ]
   },
   "husky": {
