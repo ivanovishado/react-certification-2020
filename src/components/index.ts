@@ -1,3 +1,4 @@
 import NavBar from "./NavBar";
+import VideoDeck from "./VideoDeck";
 
-export { NavBar };
+export { NavBar, VideoDeck };
