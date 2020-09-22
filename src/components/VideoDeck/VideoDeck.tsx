@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import VideoCard, { Video } from "./VideoCard";
+import VideoCard, { Video, VideoPropTypes } from "./VideoCard";
+import PropTypes from "prop-types";
 
 interface Props {
   videos: Video[];
@@ -11,15 +12,17 @@ const VideoDeck = ({ videos }: Props) => {
     <Grid stackable columns={4}>
       {videos.map((video) => (
         <VideoCard
-          key={video.id}
+          key={video.id.videoId}
           id={video.id}
-          description={video.description}
-          title={video.title}
-          thumbnailURL={video.thumbnailURL}
+          snippet={video.snippet}
         />
       ))}
     </Grid>
   );
+};
+
+VideoDeck.propTypes = {
+  videos: PropTypes.arrayOf(PropTypes.shape(VideoPropTypes)),
 };
 
 export default VideoDeck;

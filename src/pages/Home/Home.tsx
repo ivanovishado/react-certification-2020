@@ -2,17 +2,12 @@ import React from "react";
 import { VideoDeck } from "components";
 import { Video } from "components/VideoDeck/VideoCard";
 
-const Home = () => {
-  let mockVideos: Video[] = [
-    {
-      id: "123",
-      thumbnailURL: "thumb",
-      title: "Title",
-      description: "desc.",
-    },
-  ];
+interface Props {
+  videos: Video[];
+}
 
-  return <VideoDeck videos={mockVideos} />;
+const Home = ({ videos }: Props) => {
+  return <VideoDeck videos={videos} />;
 };
 
 export default Home;

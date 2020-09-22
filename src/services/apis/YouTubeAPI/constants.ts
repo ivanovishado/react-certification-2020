@@ -1,0 +1,3 @@
+const DEFAULT_MAX_RESULTS = 12;
+
+export { DEFAULT_MAX_RESULTS };

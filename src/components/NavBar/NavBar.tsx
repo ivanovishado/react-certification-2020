@@ -1,11 +1,15 @@
 import React from "react";
 import { SearchBar } from "./SearchBar";
 
-const NavBar = () => {
+interface Props {
+  searchVideos: (query: string) => void;
+}
+
+const NavBar = ({ searchVideos }: Props) => {
   return (
-    <>
-      <SearchBar />
-    </>
+    <nav>
+      <SearchBar searchVideos={searchVideos} />
+    </nav>
   );
 };
 
