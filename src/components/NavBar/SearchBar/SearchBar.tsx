@@ -1,5 +1,6 @@
 import React, { useContext, FormEvent } from "react";
 import { SearchContext } from "components/contexts";
+import PropTypes from "prop-types";
 
 interface Props {
   searchVideos: (query: string) => void;
@@ -14,20 +15,26 @@ const SearchBar = ({ searchVideos }: Props) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLInputElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     searchVideos(searchTerm);
   };
 
   return (
-    <input
-      type="text"
-      value={searchTerm}
-      placeholder="Enter your search term..."
-      onChange={handleChange}
-      onSubmit={handleSubmit}
-    ></input>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={searchTerm}
+        placeholder="Enter your search term..."
+        onChange={handleChange}
+      ></input>
+      <input type="submit" value="Search"></input>
+    </form>
   );
+};
+
+SearchBar.propTypes = {
+  searchVideos: PropTypes.func,
 };
 
 export default SearchBar;

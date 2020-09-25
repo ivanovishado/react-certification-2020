@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { NavBar } from "components";
-import { Home } from "./pages";
+import { Home, VideoDetail } from "./pages";
 import { Container } from "semantic-ui-react";
 import { SearchContext } from "components/contexts";
 import { Video } from "components/VideoDeck/VideoCard";
@@ -28,7 +28,8 @@ function App() {
         <Switch>
           <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
             <NavBar searchVideos={searchVideos} />
-            <Route path="/" exact>
+            <Route path="/videos/:videoId" component={VideoDetail} />
+            <Route exact path="/">
               <Home videos={videos} />
             </Route>
           </SearchContext.Provider>
