@@ -14,7 +14,7 @@ const NavBar = ({ searchVideos }: Props) => {
   );
 };
 
-SearchBar.propTypes = {
+NavBar.propTypes = {
   searchVideos: PropTypes.func,
 };
 

@@ -1,42 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { Switch, Route, withRouter } from "react-router-dom";
 import { NavBar } from "components";
-import { Home, VideoDetail } from "./pages";
+import { Home, VideoDetail, NotFound } from "pages";
 import { Container } from "semantic-ui-react";
 import { SearchContext } from "components/contexts";
 import { Video } from "components/VideoDeck/VideoCard";
-import { YouTubeAPI } from "services/apis";
+import { SearchTypes } from "services/apis/YouTubeAPI/constants";
+import YouTubeAPI from "services/apis/YouTubeAPI/YouTubeAPI";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("wizeline");
-  const [videos, setVideos] = useState(Array<Video>());
-
-  useEffect(() => {
-    searchVideos(searchTerm);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [videos, setVideos] = useState<Video[]>([]);
 
   const searchVideos = async (termFromSearchBar: string) => {
-    const response = await YouTubeAPI.get(termFromSearchBar);
+    const cleanTerm = termFromSearchBar.trim();
+    const data = await YouTubeAPI.get(SearchTypes.QUERY_TYPE_SEARCH, cleanTerm);
 
-    setVideos(response.items);
+    if (!data) {
+      throw new Error("No data to display");
+    }
+
+    setVideos(data.items);
   };
 
   return (
     <Container>
-      <BrowserRouter>
+      <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
+        <NavBar searchVideos={searchVideos} />
         <Switch>
-          <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
-            <NavBar searchVideos={searchVideos} />
-            <Route path="/videos/:videoId" component={VideoDetail} />
-            <Route exact path="/">
-              <Home videos={videos} />
-            </Route>
-          </SearchContext.Provider>
+          <Route path="/videos/:id">
+            <VideoDetail videos={videos} />
+          </Route>
+          <Route exact path="/">
+            <Home videos={videos} />
+          </Route>
+          <Route path="*" component={NotFound} />
         </Switch>
-      </BrowserRouter>
+      </SearchContext.Provider>
     </Container>
   );
 }
 
-export default App;
+export default withRouter(App);

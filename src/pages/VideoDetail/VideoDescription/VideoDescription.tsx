@@ -1,7 +1,17 @@
 import React from "react";
 
-const VideoDescription = () => {
-  return <></>;
+interface Props {
+  title: string;
+  description: string;
+}
+
+const VideoDescription = ({ title, description }: Props) => {
+  return (
+    <>
+      <p>{title}</p>
+      <p>{description}</p>
+    </>
+  );
 };
 
 export default VideoDescription;

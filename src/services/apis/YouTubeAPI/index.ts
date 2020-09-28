@@ -1,4 +1,4 @@
-import YouTubeAPI from "./YouTubeAPI";
-import useAPI from "./useAPI";
+import API from "./YouTubeAPI";
+import useApi from "./useApi";
 
-export { YouTubeAPI, useAPI };
+export { API, useApi };

@@ -1,19 +1,28 @@
 import { useState, useEffect } from "react";
-import YouTubeAPI from "./YouTubeAPI";
-import { DEFAULT_MAX_RESULTS } from "./constants";
+import { DEFAULT_API_MAX_RESULTS, SearchTypes } from "./constants";
+import { Video } from "components/VideoDeck/VideoCard";
+import API from "./YouTubeAPI";
 
-const useAPI = (query: string, maxResults: number = DEFAULT_MAX_RESULTS) => {
+const useApi = (
+  type: SearchTypes,
+  resource: string,
+  maxResults: number = DEFAULT_API_MAX_RESULTS
+) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<Video[]>();
 
   useEffect(() => {
-    YouTubeAPI.get(query, maxResults).then((response) => {
-      setData(response);
+    if (!resource) {
+      return;
+    }
+
+    API.get(type, resource, maxResults).then((response) => {
+      setData(response.items);
       setIsLoading(false);
     });
-  }, [query, maxResults]);
+  }, [type, resource, maxResults]);
 
   return { isLoading, data };
 };
 
-export default useAPI;
+export default useApi;

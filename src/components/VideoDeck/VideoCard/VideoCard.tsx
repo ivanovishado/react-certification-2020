@@ -2,6 +2,25 @@ import React from "react";
 import { Grid, Card, Image } from "semantic-ui-react";
 import PropTypes from "prop-types";
 
+const emptyThumbnail = (): Thumbnail => ({
+  url: "",
+  width: 0,
+  height: 0,
+});
+
+const emptyVideo = (): Video => ({
+  id: { videoId: "" },
+  snippet: {
+    thumbnails: {
+      default: emptyThumbnail(),
+      high: emptyThumbnail(),
+      medium: emptyThumbnail(),
+    },
+    title: "",
+    description: "",
+  },
+});
+
 interface Thumbnail {
   url: string;
   width: number;
@@ -56,4 +75,4 @@ const VideoPropTypes = {
 VideoCard.propTypes = VideoPropTypes;
 
 export default VideoCard;
-export { VideoPropTypes };
+export { VideoPropTypes, emptyVideo };

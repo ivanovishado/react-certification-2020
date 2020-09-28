@@ -1,6 +1,7 @@
-import React, { useContext, FormEvent } from "react";
+import React, { useContext, FormEvent, useEffect } from "react";
 import { SearchContext } from "components/contexts";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   searchVideos: (query: string) => void;
@@ -8,6 +9,7 @@ interface Props {
 
 const SearchBar = ({ searchVideos }: Props) => {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
+  const history = useHistory();
 
   const handleChange = (event: {
     target: { value: React.SetStateAction<string> };
@@ -18,7 +20,13 @@ const SearchBar = ({ searchVideos }: Props) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     searchVideos(searchTerm);
+    history.push("/");
   };
+
+  useEffect(() => {
+    searchVideos("wizeline");
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
