@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 interface Props {
   title: string;
@@ -12,6 +13,11 @@ const VideoDescription = ({ title, description }: Props) => {
       <p>{description}</p>
     </>
   );
+};
+
+VideoDescription.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
 };
 
 export default VideoDescription;

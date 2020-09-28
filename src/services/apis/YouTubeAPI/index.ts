@@ -1,3 +1,4 @@
 import API from "./YouTubeAPI";
+import useApi from "./useApi";
 
-export { API };
+export { API, useApi };
