@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Switch, Route, withRouter } from "react-router-dom";
+import { NavBar } from "components";
+import { Home, VideoDetail, NotFound } from "pages";
+import { Container } from "semantic-ui-react";
+import { SearchContext } from "components/contexts";
+import { Video } from "components/VideoDeck/VideoCard";
+import { SearchTypes } from "services/apis/YouTubeAPI/constants";
+import YouTubeAPI from "services/apis/YouTubeAPI/YouTubeAPI";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("wizeline");
+  const [videos, setVideos] = useState<Video[]>([]);
+
+  const searchVideos = async (termFromSearchBar: string) => {
+    const cleanTerm = termFromSearchBar.trim();
+    const data = await YouTubeAPI.get(SearchTypes.QUERY_TYPE_SEARCH, cleanTerm);
+
+    if (!data) {
+      throw new Error("No data to display");
+    }
+
+    setVideos(data.items);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
+        <NavBar searchVideos={searchVideos} />
+        <Switch>
+          <Route path="/videos/:id">
+            <VideoDetail videos={videos} />
+          </Route>
+          <Route exact path="/">
+            <Home videos={videos} />
+          </Route>
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </SearchContext.Provider>
+    </Container>
   );
 }
 
-export default App;
+export default withRouter(App);
