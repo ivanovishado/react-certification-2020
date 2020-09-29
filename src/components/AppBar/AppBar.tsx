@@ -118,7 +118,7 @@ export default function PrimarySearchAppBar({ searchVideos }: Props) {
 
   const handleLogOut = () => {
     setIsLoggedIn(false);
-    storage.set(AUTH_STORAGE_KEY, "false");
+    storage.set(AUTH_STORAGE_KEY, false);
     handleMenuClose();
   };
 

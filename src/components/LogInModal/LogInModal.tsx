@@ -23,7 +23,7 @@ export default function LogInModal({ open, handleClose }: Props) {
   const handleSubmit = () => {
     if (username === "wizeline" && password === "Rocks!") {
       setIsLoggedIn(true);
-      storage.set(AUTH_STORAGE_KEY, "true");
+      storage.set(AUTH_STORAGE_KEY, true);
       handleClose();
     } else {
       console.error("Chale");
