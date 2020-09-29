@@ -18,6 +18,10 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { SearchContext } from "components/contexts";
+import { LogInModal } from "components/LogInModal";
+import { useAuth } from "providers/Auth/Auth";
+import { storage } from "utils/storage";
+import { AUTH_STORAGE_KEY } from "utils/constants";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -91,6 +95,8 @@ interface Props {
 
 export default function PrimarySearchAppBar({ searchVideos }: Props) {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const [dialogOpen, setDialogOpen] = useState(false);
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -102,10 +108,18 @@ export default function PrimarySearchAppBar({ searchVideos }: Props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleLogOut = () => {
+    setIsLoggedIn(false);
+    storage.set(AUTH_STORAGE_KEY, "false");
+    handleMenuClose();
   };
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -119,6 +133,11 @@ export default function PrimarySearchAppBar({ searchVideos }: Props) {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+    handleMenuClose();
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -147,7 +166,12 @@ export default function PrimarySearchAppBar({ searchVideos }: Props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}></MenuItem>
+      {isLoggedIn ? (
+        <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
+      ) : (
+        <MenuItem onClick={handleDialogOpen}>Log In</MenuItem>
+      )}
+      <LogInModal open={dialogOpen} handleClose={handleDialogClose} />
     </Menu>
   );
 
