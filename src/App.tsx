@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
-import { NavBar } from "components";
+import { AppBar } from "components";
 import { Home, VideoDetail, NotFound } from "pages";
 import { Container } from "semantic-ui-react";
 import { SearchContext } from "components/contexts";
@@ -26,7 +26,7 @@ function App() {
   return (
     <Container>
       <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
-        <NavBar searchVideos={searchVideos} />
+        <AppBar searchVideos={searchVideos} />
         <Switch>
           <Route path="/videos/:id">
             <VideoDetail videos={videos} />
