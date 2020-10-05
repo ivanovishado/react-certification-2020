@@ -20,13 +20,18 @@ const VideoDetail = ({ videos }: Props) => {
 
   const {
     id: { videoId },
-    snippet: { title, description },
+    snippet: { title, description, thumbnails },
   } = video;
 
   return (
     <>
       <VideoPlayer videoId={videoId} />
-      <VideoDescription title={title} description={description} />
+      <VideoDescription
+        title={title}
+        id={videoId}
+        description={description}
+        defaultThumbnail={thumbnails.default}
+      />
       <RelatedVideos videoId={videoId} />
     </>
   );

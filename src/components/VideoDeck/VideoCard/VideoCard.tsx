@@ -13,15 +13,13 @@ const emptyVideo = (): Video => ({
   snippet: {
     thumbnails: {
       default: emptyThumbnail(),
-      high: emptyThumbnail(),
-      medium: emptyThumbnail(),
     },
     title: "",
     description: "",
   },
 });
 
-interface Thumbnail {
+export interface Thumbnail {
   url: string;
   width: number;
   height: number;
@@ -30,7 +28,7 @@ interface Thumbnail {
 export interface Video {
   id: { videoId: string };
   snippet: {
-    thumbnails: { default: Thumbnail; high: Thumbnail; medium: Thumbnail };
+    thumbnails: { default: Thumbnail; high?: Thumbnail; medium?: Thumbnail };
     title: string;
     description: string;
   };
@@ -63,7 +61,7 @@ const VideoPropTypes = {
   id: PropTypes.shape({ videoId: PropTypes.string }),
   snippet: PropTypes.shape({
     thumbnails: PropTypes.shape({
-      default: thumbnailShape,
+      default: thumbnailShape.isRequired,
       high: thumbnailShape,
       medium: thumbnailShape,
     }),
