@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import clsx from "clsx";
+import { useHistory, Link } from "react-router-dom";
 import {
   fade,
   makeStyles,
@@ -17,6 +18,14 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import HomeIcon from "@material-ui/icons/Home";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+
 import { SearchContext } from "components/contexts";
 import { LogInModal } from "components/LogInModal";
 import { useAuth } from "providers/Auth/Auth";
@@ -86,6 +95,9 @@ const useStyles = makeStyles((theme: Theme) =>
         display: "none",
       },
     },
+    list: {
+      width: 250,
+    },
   })
 );
 
@@ -97,6 +109,7 @@ export default function PrimarySearchAppBar({ searchVideos }: Props) {
   const { searchTerm, setSearchTerm } = useContext(SearchContext);
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -200,6 +213,50 @@ export default function PrimarySearchAppBar({ searchVideos }: Props) {
     </Menu>
   );
 
+  function ListItemLink(props: {
+    icon: JSX.Element;
+    primary: string;
+    to: string;
+  }) {
+    const { icon, primary, to } = props;
+
+    const CustomLink = React.useMemo(
+      () =>
+        React.forwardRef((linkProps, ref: any) => (
+          <Link ref={ref} to={to} {...linkProps} />
+        )),
+      [to]
+    );
+
+    return (
+      <li>
+        <ListItem button component={CustomLink}>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText primary={primary} />
+        </ListItem>
+      </li>
+    );
+  }
+
+  const drawerList = () => (
+    <div
+      className={clsx(classes.list)}
+      role="presentation"
+      onClick={() => setDrawerOpen(false)}
+    >
+      <List>
+        <ListItemLink icon={<HomeIcon />} primary="Home" to="/" />
+        {isLoggedIn && (
+          <ListItemLink
+            icon={<FavoriteIcon />}
+            primary="Favorites"
+            to="/favorites"
+          />
+        )}
+      </List>
+    </div>
+  );
+
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -209,9 +266,17 @@ export default function PrimarySearchAppBar({ searchVideos }: Props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={() => setDrawerOpen(true)}
           >
             <MenuIcon />
           </IconButton>
+          <Drawer
+            anchor={"left"}
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+          >
+            {drawerList()}
+          </Drawer>
           <Typography className={classes.title} variant="h6" noWrap>
             React Challenge 2020
           </Typography>
