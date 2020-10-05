@@ -1,6 +1,19 @@
 import React from "react";
-import { Grid, Card, Image } from "semantic-ui-react";
+import { CardContent } from "semantic-ui-react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
 import PropTypes from "prop-types";
+import { CardActionArea, Typography } from "@material-ui/core";
+
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 140,
+  },
+});
 
 const emptyThumbnail = (): Thumbnail => ({
   url: "",
@@ -38,16 +51,28 @@ const VideoCard = ({
   id: { videoId },
   snippet: { title, description, thumbnails },
 }: Video) => {
+  const classes = useStyles();
+
   return (
-    <Grid.Column>
-      <Card href={`/videos/${videoId}`}>
-        <Image src={thumbnails.default.url} />
-        <Card.Content>
-          <Card.Header>{title}</Card.Header>
-          <Card.Description>{description}</Card.Description>
-        </Card.Content>
+    <div>
+      <Card className={classes.root}>
+        <CardActionArea href={`/videos/${videoId}`}>
+          <CardMedia
+            className={classes.media}
+            image={thumbnails.default.url}
+            title={title}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {description}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
       </Card>
-    </Grid.Column>
+    </div>
   );
 };
 
