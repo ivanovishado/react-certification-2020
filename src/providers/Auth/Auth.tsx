@@ -14,12 +14,10 @@ interface authContext {
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
 }
 
-const createEmptyAuthContext = (): authContext => ({
+const AuthContext = React.createContext<authContext>({
   isLoggedIn: false,
   setIsLoggedIn: () => {},
 });
-
-const AuthContext = React.createContext<authContext>(createEmptyAuthContext());
 
 function useAuth() {
   const context = useContext(AuthContext);
