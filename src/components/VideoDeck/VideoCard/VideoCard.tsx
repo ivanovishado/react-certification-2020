@@ -6,6 +6,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import PropTypes from "prop-types";
 import { CardActionArea, Typography } from "@material-ui/core";
 
+import { MAX_DESC_CHARS } from "utils/constants";
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
@@ -26,6 +28,8 @@ const emptyVideo = (): Video => ({
   snippet: {
     thumbnails: {
       default: emptyThumbnail(),
+      high: emptyThumbnail(),
+      medium: emptyThumbnail(),
     },
     title: "",
     description: "",
@@ -41,7 +45,7 @@ export interface Thumbnail {
 export interface Video {
   id: { videoId: string };
   snippet: {
-    thumbnails: { default: Thumbnail; high?: Thumbnail; medium?: Thumbnail };
+    thumbnails: { default: Thumbnail; high: Thumbnail; medium: Thumbnail };
     title: string;
     description: string;
   };
@@ -59,7 +63,7 @@ const VideoCard = ({
         <CardActionArea href={`/videos/${videoId}`}>
           <CardMedia
             className={classes.media}
-            image={thumbnails.default.url}
+            image={thumbnails.high.url}
             title={title}
           />
           <CardContent>
@@ -67,7 +71,7 @@ const VideoCard = ({
               {title}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {description}
+              {description.substring(0, MAX_DESC_CHARS) + "..."}
             </Typography>
           </CardContent>
         </CardActionArea>

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Grid } from "@material-ui/core";
 
 import { useStore } from "store";
 import { useAuth } from "providers/Auth";
@@ -9,16 +10,15 @@ import { Thumbail } from "components/VideoDeck/VideoCard";
 interface Props {
   id: string;
   title: string;
-  defaultThumbnail: Thumbail;
+  thumbnails: {
+    default: Thumbail;
+    high: Thumbail;
+    medium: Thumbail;
+  };
   description: string;
 }
 
-const VideoDescription = ({
-  id,
-  title,
-  defaultThumbnail,
-  description,
-}: Props) => {
+const VideoDescription = ({ id, title, thumbnails, description }: Props) => {
   const { state, dispatch } = useStore();
   const { isLoggedIn } = useAuth();
   const video = state.favVideos.find((video) => video.id.videoId === id);
@@ -33,7 +33,7 @@ const VideoDescription = ({
             payload: {
               id: { videoId: id },
               snippet: {
-                thumbnails: { default: defaultThumbnail },
+                thumbnails,
                 title,
                 description,
               },
@@ -59,16 +59,24 @@ const VideoDescription = ({
   };
 
   return (
-    <>
-      <p>{title}</p>
-      <p>{description}</p>
-      {isLoggedIn &&
-        (isVideoInFavorites ? (
-          <RemoveFromFavoritesBtn />
-        ) : (
-          <AddToFavoritesBtn />
-        ))}
-    </>
+    <section>
+      <Grid item md={9}>
+        <h3>{title}</h3>
+      </Grid>
+      <Grid container item md={3} justify="flex-end">
+        <Grid>
+          {isLoggedIn &&
+            (isVideoInFavorites ? (
+              <RemoveFromFavoritesBtn />
+            ) : (
+              <AddToFavoritesBtn />
+            ))}
+        </Grid>
+      </Grid>
+      <Grid container item md={12} alignItems="center">
+        <h4>{description}</h4>
+      </Grid>
+    </section>
   );
 };
 

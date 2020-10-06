@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useApi } from "services/apis/YouTubeAPI";
 import { List } from "semantic-ui-react";
+
+import { useApi } from "services/apis/YouTubeAPI";
 import { SearchTypes } from "services/apis/YouTubeAPI/constants";
-import { Video } from "components/VideoDeck/VideoCard";
+import VideoCard, { Video } from "components/VideoDeck/VideoCard";
+import Grid from "@material-ui/core/Grid";
 
 interface Props {
   videoId: string;
@@ -17,7 +19,15 @@ const RelatedVideos = ({ videoId }: Props) => {
   ) : (
     <List>
       {data.map((video: Video) => {
-        return <p>{video.id.videoId}</p>;
+        return (
+          <Grid item md={12}>
+            <VideoCard
+              key={video.id.videoId}
+              id={video.id}
+              snippet={video.snippet}
+            />
+          </Grid>
+        );
       })}
     </List>
   );

@@ -10,7 +10,7 @@ interface Props {
 
 const VideoDeck = ({ videos }: Props) => {
   return (
-    <Grid container spacing={5}>
+    <Grid container spacing={4} style={{ padding: "10px" }}>
       {videos.map((video) => (
         <Grid item md={3}>
           <VideoCard
