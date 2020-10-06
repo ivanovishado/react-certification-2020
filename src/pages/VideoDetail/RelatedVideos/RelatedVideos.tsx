@@ -6,13 +6,18 @@ import { useApi } from "services/apis/YouTubeAPI";
 import { SearchTypes } from "services/apis/YouTubeAPI/constants";
 import VideoCard, { Video } from "components/VideoDeck/VideoCard";
 import Grid from "@material-ui/core/Grid";
+import { MAX_RELATED_VIDEOS } from "utils/constants";
 
 interface Props {
   videoId: string;
 }
 
 const RelatedVideos = ({ videoId }: Props) => {
-  const { isLoading, data } = useApi(SearchTypes.RELATED_TYPE_SEARCH, videoId);
+  const { isLoading, data } = useApi(
+    SearchTypes.RELATED_TYPE_SEARCH,
+    videoId,
+    MAX_RELATED_VIDEOS
+  );
 
   return isLoading || data == null ? (
     <div>Loading...</div>
