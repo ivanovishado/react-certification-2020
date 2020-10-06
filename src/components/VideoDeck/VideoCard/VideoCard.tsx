@@ -5,6 +5,7 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import PropTypes from "prop-types";
 import { CardActionArea, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 import { MAX_DESC_CHARS } from "utils/constants";
 import { useVideo } from "providers/CurrentVideo";
@@ -59,28 +60,30 @@ const VideoCard = (props: Video) => {
   const { title, description, thumbnails } = props.snippet;
 
   return (
-    <Card
-      className={classes.root}
-      onClick={() => {
-        setSelectedVideo(props);
-      }}
-    >
-      <CardActionArea href={`/videos/${videoId}`}>
-        <CardMedia
-          className={classes.media}
-          image={thumbnails.high.url}
-          title={title}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {description && description.substring(0, MAX_DESC_CHARS) + "..."}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+    <Link to={`/videos/${videoId}`}>
+      <Card
+        className={classes.root}
+        onClick={() => {
+          setSelectedVideo(props);
+        }}
+      >
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={thumbnails.high.url}
+            title={title}
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {description && description.substring(0, MAX_DESC_CHARS) + "..."}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Link>
   );
 };
 
