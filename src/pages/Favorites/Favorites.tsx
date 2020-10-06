@@ -7,7 +7,7 @@ const Favorites = () => {
   const { state } = useStore();
   const { favVideos } = state;
 
-  return favVideos ? (
+  return favVideos && favVideos.length > 0 ? (
     <VideoDeck videos={favVideos} />
   ) : (
     <div>There are no favorites to show.</div>

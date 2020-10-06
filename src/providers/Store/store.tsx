@@ -20,7 +20,7 @@ type Action =
 
 const getInitialState = () => {
   const favVideos = storage.get(FAVS_STORAGE_KEY) ?? [];
-  return favVideos;
+  return { favVideos };
 };
 
 const StoreContext = React.createContext<storeContext>({
