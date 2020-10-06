@@ -1,6 +1,22 @@
 import React from "react";
-import { Grid, Card, Image } from "semantic-ui-react";
+import { CardContent } from "semantic-ui-react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
 import PropTypes from "prop-types";
+import { CardActionArea, Typography } from "@material-ui/core";
+
+import { MAX_DESC_CHARS } from "utils/constants";
+import { useVideo } from "providers/CurrentVideo";
+
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 140,
+  },
+});
 
 const emptyThumbnail = (): Thumbnail => ({
   url: "",
@@ -13,6 +29,8 @@ const emptyVideo = (): Video => ({
   snippet: {
     thumbnails: {
       default: emptyThumbnail(),
+      high: emptyThumbnail(),
+      medium: emptyThumbnail(),
     },
     title: "",
     description: "",
@@ -28,26 +46,41 @@ export interface Thumbnail {
 export interface Video {
   id: { videoId: string };
   snippet: {
-    thumbnails: { default: Thumbnail; high?: Thumbnail; medium?: Thumbnail };
+    thumbnails: { default: Thumbnail; high: Thumbnail; medium: Thumbnail };
     title: string;
     description: string;
   };
 }
 
-const VideoCard = ({
-  id: { videoId },
-  snippet: { title, description, thumbnails },
-}: Video) => {
+const VideoCard = (props: Video) => {
+  const classes = useStyles();
+  const { setSelectedVideo } = useVideo();
+  const { videoId } = props.id;
+  const { title, description, thumbnails } = props.snippet;
+
   return (
-    <Grid.Column>
-      <Card href={`/videos/${videoId}`}>
-        <Image src={thumbnails.default.url} />
-        <Card.Content>
-          <Card.Header>{title}</Card.Header>
-          <Card.Description>{description}</Card.Description>
-        </Card.Content>
-      </Card>
-    </Grid.Column>
+    <Card
+      className={classes.root}
+      onClick={() => {
+        setSelectedVideo(props);
+      }}
+    >
+      <CardActionArea href={`/videos/${videoId}`}>
+        <CardMedia
+          className={classes.media}
+          image={thumbnails.high.url}
+          title={title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {description && description.substring(0, MAX_DESC_CHARS) + "..."}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
 

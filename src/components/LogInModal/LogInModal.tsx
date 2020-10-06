@@ -26,7 +26,7 @@ export default function LogInModal({ open, handleClose }: Props) {
       storage.set(AUTH_STORAGE_KEY, true);
       handleClose();
     } else {
-      console.error("Chale");
+      alert("Wrong credentials!");
     }
   };
 

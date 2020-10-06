@@ -1,9 +1,9 @@
 import React, { useReducer, useContext } from "react";
 
-import { storage } from "./utils/storage";
-import { FAVS_STORAGE_KEY } from "./utils/constants";
-import { ADD_FAVORITE, REMOVE_FAVORITE } from "./utils/actions";
-import { Video } from "./components/VideoDeck/VideoCard";
+import { storage } from "../../utils/storage";
+import { FAVS_STORAGE_KEY } from "../../utils/constants";
+import { ADD_FAVORITE, REMOVE_FAVORITE } from "../../utils/actions";
+import { Video } from "../../components/VideoDeck/VideoCard";
 
 type storeContext = {
   state: State;
