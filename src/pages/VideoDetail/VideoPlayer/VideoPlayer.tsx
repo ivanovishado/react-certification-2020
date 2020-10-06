@@ -24,7 +24,7 @@ const VideoPlayer = ({ videoId, title, thumbnails, description }: Props) => {
   return (
     <Grid container item md={12} direction="column">
       <Grid item md={12}>
-        <ReactPlayer url={URL} playing controls muted />;
+        <ReactPlayer url={URL} playing controls muted />
       </Grid>
       <Grid container item md={12} alignItems="center">
         <VideoDescription

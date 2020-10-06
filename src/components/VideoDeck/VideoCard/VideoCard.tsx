@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { CardActionArea, Typography } from "@material-ui/core";
 
 import { MAX_DESC_CHARS } from "utils/constants";
+import { useVideo } from "providers/CurrentVideo";
 
 const useStyles = makeStyles({
   root: {
@@ -51,32 +52,35 @@ export interface Video {
   };
 }
 
-const VideoCard = ({
-  id: { videoId },
-  snippet: { title, description, thumbnails },
-}: Video) => {
+const VideoCard = (props: Video) => {
   const classes = useStyles();
+  const { setSelectedVideo } = useVideo();
+  const { videoId } = props.id;
+  const { title, description, thumbnails } = props.snippet;
 
   return (
-    <div>
-      <Card className={classes.root}>
-        <CardActionArea href={`/videos/${videoId}`}>
-          <CardMedia
-            className={classes.media}
-            image={thumbnails.high.url}
-            title={title}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {title}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {description.substring(0, MAX_DESC_CHARS) + "..."}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </div>
+    <Card
+      className={classes.root}
+      onClick={() => {
+        setSelectedVideo(props);
+      }}
+    >
+      <CardActionArea href={`/videos/${videoId}`}>
+        <CardMedia
+          className={classes.media}
+          image={thumbnails.high.url}
+          title={title}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {description && description.substring(0, MAX_DESC_CHARS) + "..."}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
 

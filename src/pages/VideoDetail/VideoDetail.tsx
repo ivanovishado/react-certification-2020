@@ -1,28 +1,17 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { Grid } from "@material-ui/core";
-import PropTypes from "prop-types";
 
 import VideoPlayer from "./VideoPlayer";
 import RelatedVideos from "./RelatedVideos";
-import {
-  Video,
-  emptyVideo,
-  VideoPropTypes,
-} from "components/VideoDeck/VideoCard";
+import { useVideo } from "providers/CurrentVideo";
 
-interface Props {
-  videos: Video[];
-}
-
-const VideoDetail = ({ videos }: Props) => {
-  const { id } = useParams();
-  const video = videos.find((video) => id === video.id.videoId) ?? emptyVideo();
+const VideoDetail = () => {
+  const { selectedVideo } = useVideo();
 
   const {
     id: { videoId },
     snippet: { title, description, thumbnails },
-  } = video;
+  } = selectedVideo;
 
   return (
     <section>
@@ -43,10 +32,6 @@ const VideoDetail = ({ videos }: Props) => {
       </Grid>
     </section>
   );
-};
-
-VideoDetail.propTypes = {
-  videos: PropTypes.arrayOf(PropTypes.shape(VideoPropTypes)),
 };
 
 export default VideoDetail;

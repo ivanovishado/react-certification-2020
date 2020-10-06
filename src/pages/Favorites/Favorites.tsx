@@ -1,7 +1,7 @@
 import React from "react";
 
 import { VideoDeck } from "components";
-import { useStore } from "store";
+import { useStore } from "providers/Store";
 
 const Favorites = () => {
   const { state } = useStore();
