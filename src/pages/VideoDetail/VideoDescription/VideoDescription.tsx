@@ -82,7 +82,6 @@ const VideoDescription = ({ id, title, thumbnails, description }: Props) => {
 VideoDescription.propTypes = {
   id: PropTypes.string,
   title: PropTypes.string,
-  imageUrl: PropTypes.string,
   description: PropTypes.string,
 };
 

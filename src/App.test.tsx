@@ -1,9 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react";
+
 import App from "./App";
 
-test("renders text", () => {
+test("renders title", () => {
   const { getByText } = render(<App />);
-  const linkElement = getByText(/world/i);
-  expect(linkElement).toBeInTheDocument();
+  const textElement = getByText(/Welcome to the challenge!/i);
+  expect(textElement).toBeInTheDocument();
 });
