@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import { Container } from "semantic-ui-react";
 
 import { AppBar } from "components";
@@ -30,27 +30,30 @@ function App() {
 
   return (
     <Container>
-      <AuthProvider>
-        <CurrentVideoProvider>
-          <StoreProvider>
-            <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
-              <AppBar searchVideos={searchVideos} />
-              <Switch>
-                <Route path="/videos/:id" component={VideoDetail} />
-                <ProtectedRoute path="/favorites" component={Favorites} />
-                <Route
-                  exact
-                  path="/"
-                  render={(props) => <Home {...props} videos={videos} />}
-                />
-                <Route path="*" component={NotFound} />
-              </Switch>
-            </SearchContext.Provider>
-          </StoreProvider>
-        </CurrentVideoProvider>
-      </AuthProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <CurrentVideoProvider>
+            <StoreProvider>
+              <SearchContext.Provider value={{ searchTerm, setSearchTerm }}>
+                <AppBar searchVideos={searchVideos} />
+                <h1>Welcome to the challenge!</h1>
+                <Switch>
+                  <Route path="/videos/:id" component={VideoDetail} />
+                  <ProtectedRoute path="/favorites" component={Favorites} />
+                  <Route
+                    exact
+                    path="/"
+                    render={(props) => <Home {...props} videos={videos} />}
+                  />
+                  <Route path="*" component={NotFound} />
+                </Switch>
+              </SearchContext.Provider>
+            </StoreProvider>
+          </CurrentVideoProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </Container>
   );
 }
 
-export default withRouter(App);
+export default App;

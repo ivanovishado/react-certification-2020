@@ -8,6 +8,7 @@ const storage = {
       }
     } catch (error) {
       console.error(`Error parsing storage item "${key}".`);
+    } finally {
       return null;
     }
   },
